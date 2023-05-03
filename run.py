@@ -6,7 +6,7 @@ import pandas as pd
 from pandasql import sqldf, load_meat, load_births
 from app.PBFilter import PBFilter
 from app.PEFilter import PEFilter
-
+from app.DYRFilter import TTMDYRFilter
 
 def main():
     quote_ctx = OpenQuoteContext(host='127.0.0.1', port=11111)
@@ -25,6 +25,11 @@ def main():
         print('PBFilter', df.shape[0])
         success, df = PEFilter(p_data_frame=data).doFilte()
         print('PEFilter', df.shape[0])
+        success, df = TTMDYRFilter(p_data_frame=data).doFilte()
+        print('TTMDYRFilter', df.shape[0])
+
+
+
         time.sleep(1)
 
     quote_ctx.close()  # 结束后记得关闭当条连接，防止连接条数用尽
