@@ -3,6 +3,7 @@
 import datetime, time, os, sys, json, functools, random, sqlite3, greenlet
 from futu import *
 import pandas as pd
+from pandasql import sqldf, load_meat, load_births
 
 
 def main():
@@ -10,6 +11,12 @@ def main():
 
     success, df_hk = get_all_stocks_by_type(quote_ctx=quote_ctx, stock_type=Market.HK)
     success, df_sh = get_all_stocks_by_type(quote_ctx=quote_ctx, stock_type=Market.SH)
+
+    pysqldf = lambda q: sqldf(q, globals())
+
+    # >> > meat = load_meat()
+    # >> > births = load_births()
+    print(pysqldf("SELECT * FROM meat LIMIT 10;").head())
 
     quote_ctx.close()  # 结束后记得关闭当条连接，防止连接条数用尽
     return 0
