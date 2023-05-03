@@ -11,12 +11,14 @@ def main():
 
     success, df_hk = get_all_stocks_by_type(quote_ctx=quote_ctx, stock_type=Market.HK)
     success, df_sh = get_all_stocks_by_type(quote_ctx=quote_ctx, stock_type=Market.SH)
+    code_list = df_sh['code'].values.tolist()
+    code_list = "','".join(code_list)
 
     pysqldf = lambda q: sqldf(q, globals())
-
     # >> > meat = load_meat()
     # >> > births = load_births()
-    print(pysqldf("SELECT * FROM meat LIMIT 10;").head())
+    df = pysqldf(f"SELECT * FROM df_hk where code in ('{code_list}')")
+    print(df)
 
     quote_ctx.close()  # 结束后记得关闭当条连接，防止连接条数用尽
     return 0
