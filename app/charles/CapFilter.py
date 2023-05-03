@@ -23,6 +23,4 @@ class CapFilter(object):
     def doFilte(self) -> (bool, pd.DataFrame):
         success, df = None, None
         self.data_frame = self.data_frame[self.data_frame['total_market_val'] > 600 * 100000000]
-        # v = self.data_frame['total_market_val']
-        # print(v)
         return success, self.data_frame
