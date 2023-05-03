@@ -2,6 +2,7 @@
 # coding:utf-8
 import math
 from futu import *
+from pandasql import sqldf
 from app.charles import CharlesFilterChain
 
 
@@ -21,8 +22,21 @@ def main():
         time.sleep(1)
 
     final_df = pd.concat(inline_frames)
-
     final_df = final_df[['code', 'pe_ttm_ratio', 'pb_ratio', 'total_market_val']]
+
+
+
+
+    for index, row in final_df.iterrows():
+        code = row.get('code', None)
+        o = df_hk[df_hk['code'] == code]
+        name = o.get('name', None)
+        # final_df['name'] = name
+        # sql = f'select * from df_hk where code="{code}"'
+        # tiny_df = sqldf(sql, globals())
+        a = 1
+        pass
+
     print(final_df)
 
     print(final_df.shape[0])
