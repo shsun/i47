@@ -4,7 +4,7 @@ import datetime, time, os, sys, json, functools, random, sqlite3, greenlet, math
 from futu import *
 import pandas as pd
 from pandasql import sqldf, load_meat, load_births
-from app.pb import PBFilter
+from app.PBFilter import PBFilter
 
 
 def main():
