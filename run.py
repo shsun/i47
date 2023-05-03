@@ -1,13 +1,8 @@
 #!/usr/bin/python
 # coding:utf-8
-import datetime, time, os, sys, json, functools, random, sqlite3, greenlet, math
+import math
 from futu import *
-import pandas as pd
-from pandasql import sqldf, load_meat, load_births
-from app.PBFilter import PBFilter
-from app.PEFilter import PEFilter
-from app.DYRFilter import TTMDYRFilter
-from app.CapFilter import CapFilter
+from app.charles import PBFilter, PEFilter, TTMDYRFilter, CapFilter, CharlesFilterChain
 
 
 def main():
@@ -23,17 +18,7 @@ def main():
         # 每 30 秒内最多请求 60 次快照。
         # 每次请求，接口参数 股票代码列表 支持传入的标的数量上限是 400 个。
         ret, df = quote_ctx.get_market_snapshot(sub_codes)
-        success, df = PBFilter(p_data_frame=df).doFilte()
-        # print('PBFilter', df.shape[0])
-        success, df = PEFilter(p_data_frame=df).doFilte()
-        # print('PEFilter', df.shape[0])
-        success, df = TTMDYRFilter(p_data_frame=df).doFilte()
-        # print('TTMDYRFilter', df.shape[0])
-        success, df = CapFilter(p_data_frame=df).doFilte()
-        # print('CapFilter', df.shape[0])
-
-        # print(i, df)
-
+        success, df = CharlesFilterChain(p_data_frame=df).doFilte()
         time.sleep(1)
 
     quote_ctx.close()  # 结束后记得关闭当条连接，防止连接条数用尽

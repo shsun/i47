@@ -3,6 +3,8 @@
 import datetime, time, os, sys, json, functools, random, sqlite3, greenlet
 import pandas as pd
 
+from app.charles import PBFilter, PEFilter, TTMDYRFilter, CapFilter
+
 
 class CharlesFilterChain(object):
     """
@@ -13,12 +15,14 @@ class CharlesFilterChain(object):
     def __init__(self, p_data_frame: pd.DataFrame):
         super().__init__()
         self.data_frame = p_data_frame
-        self.filters = list()
-
-    def add_filter(self, p_filter=None):
-        self.filters.append(p_filter)
 
     def doFilte(self) -> (bool, pd.DataFrame):
-        for i, v in enumerate(self.filters):
-            s, self.data_frame = v(p_data_frame=self.data_frame).doFilte
-        return True, self.data_frame
+        df = self.data_frame
+        success, df = PBFilter(p_data_frame=df).doFilte()
+        # print('PBFilter', df.shape[0])
+        success, df = PEFilter(p_data_frame=df).doFilte()
+        # print('PEFilter', df.shape[0])
+        success, df = TTMDYRFilter(p_data_frame=df).doFilte()
+        # print('TTMDYRFilter', df.shape[0])
+        success, df = CapFilter(p_data_frame=df).doFilte()
+        return True, df
