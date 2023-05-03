@@ -1,3 +1,7 @@
 pandas==2.0.1
 requests==2.29.0
 SQLAlchemy==2.0.12
+futu-api==5.12.2408
+#futuquant==3.5.1
+#TA-Lib==0.4.23
+APScheduler==3.10.1
