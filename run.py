@@ -22,6 +22,9 @@ def main():
 
     final_df = pd.concat(inline_frames)
 
+    final_df = final_df[['code', 'pe_ttm_ratio', 'pb_ratio', 'total_market_val']]
+    print(final_df)
+
     print(final_df.shape[0])
 
     quote_ctx.close()  # 结束后记得关闭当条连接，防止连接条数用尽
