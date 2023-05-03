@@ -1,18 +1,10 @@
 #!/usr/bin/python
 # coding=utf-8
+import pandas as pd
 
 """
 PE<10
 """
-
-# !/usr/bin/python
-# coding=utf-8
-import pandas as pd
-
-"""
-PB<1
-"""
-
 
 class PEFilter(object):
     """
