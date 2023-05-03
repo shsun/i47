@@ -7,6 +7,7 @@ from pandasql import sqldf, load_meat, load_births
 from app.PBFilter import PBFilter
 from app.PEFilter import PEFilter
 from app.DYRFilter import TTMDYRFilter
+from app.market_cap import CapFilter
 
 def main():
     quote_ctx = OpenQuoteContext(host='127.0.0.1', port=11111)
@@ -20,14 +21,15 @@ def main():
         print(i, len(sub_codes))
         # 每 30 秒内最多请求 60 次快照。
         # 每次请求，接口参数 股票代码列表 支持传入的标的数量上限是 400 个。
-        ret, data = quote_ctx.get_market_snapshot(sub_codes)
-        success, df = PBFilter(p_data_frame=data).doFilte()
+        ret, df = quote_ctx.get_market_snapshot(sub_codes)
+        success, df = PBFilter(p_data_frame=df).doFilte()
         print('PBFilter', df.shape[0])
-        success, df = PEFilter(p_data_frame=data).doFilte()
+        success, df = PEFilter(p_data_frame=df).doFilte()
         print('PEFilter', df.shape[0])
-        success, df = TTMDYRFilter(p_data_frame=data).doFilte()
+        success, df = TTMDYRFilter(p_data_frame=df).doFilte()
         print('TTMDYRFilter', df.shape[0])
-
+        success, df = CapFilter(p_data_frame=df).doFilte()
+        print('CapFilter', df.shape[0])
 
 
         time.sleep(1)
