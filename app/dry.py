@@ -1,11 +1,13 @@
 #!/usr/bin/python
 # coding=utf-8
+import datetime, time, os, sys, json, functools, random, sqlite3, greenlet
 import pandas as pd
 
 """
 每年分红3-5%
 
-股息率（Dividend Yield Ratio）
+股息率（Dividend Yield Ratio），是一年的总派息额与当时市价的比例。以占股票最后销售价格的百分数表示的年度股息，该指标是投资收益率的简化形式。
+股息率是股息与股票价格之间的比率。
 """
 
 
@@ -14,10 +16,12 @@ class DYRFilter(object):
 
     """
 
-    def __init__(self, ma_period1: int = 13, ma_period2: int = 21):
-        self.MA_PERIOD1 = ma_period1
-        self.MA_PERIOD2 = ma_period2
+    def __init__(self, p_data_frame: pd.DataFrame, p_start_datetime: datetime = None, p_end_datetime: datetime = None):
         super().__init__()
+
+        self.start_datetime = p_start_datetime
+        self.end_datetime = p_end_datetime
+        self.data_frame = p_data_frame
 
     def doFilte(self, input_data: pd.DataFrame, info_data: dict) -> (bool, pd.DataFrame):
         """
