@@ -7,7 +7,7 @@ from pandasql import sqldf, load_meat, load_births
 from app.PBFilter import PBFilter
 from app.PEFilter import PEFilter
 from app.DYRFilter import TTMDYRFilter
-from app.market_cap import CapFilter
+from app.CapFilter import CapFilter
 
 def main():
     quote_ctx = OpenQuoteContext(host='127.0.0.1', port=11111)
