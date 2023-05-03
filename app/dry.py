@@ -2,19 +2,13 @@
 # coding=utf-8
 
 """
-PE<10
-"""
+每年分红3-5%
 
-# !/usr/bin/python
-# coding=utf-8
-import pandas as pd
-
-"""
-PB<1
+股息率（Dividend Yield Ratio）
 """
 
 
-class PEFilter(object):
+class DYRFilter(object):
     """
 
     """
