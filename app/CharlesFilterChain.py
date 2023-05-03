@@ -6,7 +6,8 @@ import pandas as pd
 
 class CharlesFilterChain(object):
     """
-
+    查尔斯，62岁，现任香港某教育集团董事长，有着传奇的人生经历。20年前，他以港股投资开始了自己的财富人生。
+    查尔斯很少出现在媒体上，有人称他为投资圈的“隐士”，一起来认识这位低调的投资者。
     """
 
     def __init__(self, p_data_frame: pd.DataFrame):
