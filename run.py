@@ -1,27 +1,27 @@
 #!/usr/bin/python
 # coding:utf-8
-import datetime, time, os, sys, json, functools, random, sqlite3, greenlet
+import datetime, time, os, sys, json, functools, random, sqlite3, greenlet, math
 from futu import *
 import pandas as pd
 from pandasql import sqldf, load_meat, load_births
 from app.pb import PBFilter
 
+
 def main():
     quote_ctx = OpenQuoteContext(host='127.0.0.1', port=11111)
 
     success, df_hk = get_all_stocks_by_type(quote_ctx=quote_ctx, stock_type=Market.HK)
-    success, df_sh = get_all_stocks_by_type(quote_ctx=quote_ctx, stock_type=Market.SH)
-    # code_list = df_sh['code'].values.tolist()
-    # code_list = "','".join(code_list)
-    #
-    # pysqldf = lambda q: sqldf(q, globals())
-    # df = pysqldf(f"SELECT * FROM df_hk where code in ('{code_list}')")
-    # print(df)
+    # success, df_sh = get_all_stocks_by_type(quote_ctx=quote_ctx, stock_type=Market.SH)
 
-    print(df_hk.columns)
-    success, df = PBFilter(p_data_frame=df_hk).doFilte()
-
-
+    codes = df_hk['code'].values.tolist()
+    for i in range(0, math.ceil(len(codes) / 400)):
+        sub_codes = codes[i * 400:400 * (i + 1)]
+        print(i, len(sub_codes))
+        # 每 30 秒内最多请求 60 次快照。
+        # 每次请求，接口参数 股票代码列表 支持传入的标的数量上限是 400 个。
+        ret, data = quote_ctx.get_market_snapshot(sub_codes)
+        success, df = PBFilter(p_data_frame=data).doFilte()
+        time.sleep(1)
 
     quote_ctx.close()  # 结束后记得关闭当条连接，防止连接条数用尽
     return 0

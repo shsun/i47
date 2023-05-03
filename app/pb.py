@@ -26,8 +26,5 @@ class PBFilter(object):
         # print(df.sharp[0])
         # print(self.data_frame.sharp[0])
 
-        record2 = self.data_frame[self.data_frame['pb_ratio']<1]
-
-
-
-        return success, df
+        self.data_frame = self.data_frame[self.data_frame['pb_ratio'] < 1]
+        return success, self.data_frame
