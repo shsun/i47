@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # coding=utf-8
+import datetime, time, os, sys, json, functools, random, sqlite3, greenlet
 import pandas as pd
 
 """
@@ -11,10 +12,12 @@ class PEFilter(object):
 
     """
 
-    def __init__(self, ma_period1: int = 13, ma_period2: int = 21):
-        self.MA_PERIOD1 = ma_period1
-        self.MA_PERIOD2 = ma_period2
+    def __init__(self, p_data_frame: pd.DataFrame, p_start_datetime: datetime = None, p_end_datetime: datetime = None):
         super().__init__()
+
+        self.start_datetime = p_start_datetime
+        self.end_datetime = p_end_datetime
+        self.data_frame = p_data_frame
 
     def doFilte(self, input_data: pd.DataFrame, info_data: dict) -> (bool, pd.DataFrame):
         """
