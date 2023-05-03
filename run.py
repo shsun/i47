@@ -2,24 +2,26 @@
 # coding:utf-8
 import math
 from futu import *
-from app.charles import PBFilter, PEFilter, TTMDYRFilter, CapFilter, CharlesFilterChain
+from app.charles import CharlesFilterChain
 
 
 def main():
     quote_ctx = OpenQuoteContext(host='127.0.0.1', port=11111)
 
     success, df_hk = get_all_stocks_by_type(quote_ctx=quote_ctx, stock_type=Market.HK)
-    # success, df_sh = get_all_stocks_by_type(quote_ctx=quote_ctx, stock_type=Market.SH)
 
+    inline_frames = list()
     codes = df_hk['code'].values.tolist()
     for i in range(0, math.ceil(len(codes) / 400)):
         sub_codes = codes[i * 400:(i + 1) * 400]
-        # print(i, len(sub_codes))
-        # 每 30 秒内最多请求 60 次快照。
-        # 每次请求，接口参数 股票代码列表 支持传入的标的数量上限是 400 个。
+        # 每 30 秒内最多请求 60 次快照。每次请求，接口参数 股票代码列表 支持传入的标的数量上限是 400 个。
         ret, df = quote_ctx.get_market_snapshot(sub_codes)
         success, df = CharlesFilterChain(p_data_frame=df).doFilte()
+        inline_frames.append(df)
         time.sleep(1)
+    final_df = pd.concat(inline_frames)
+
+    print(final_df.shape[0])
 
     quote_ctx.close()  # 结束后记得关闭当条连接，防止连接条数用尽
     return 0
