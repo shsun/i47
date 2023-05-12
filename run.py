@@ -9,7 +9,7 @@ from app.charles import CharlesFilterChain
 def main():
     quote_ctx = OpenQuoteContext(host='127.0.0.1', port=11111)
 
-    success, df_hk = get_all_stocks_by_type(quote_ctx=quote_ctx, stock_type=Market.HK)
+    success, df_hk = get_all_stocks_by_type(quote_ctx=quote_ctx, stock_type=Market.SH)
     codes = df_hk['code'].values.tolist()
 
     inline_frames = list()
