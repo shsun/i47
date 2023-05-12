@@ -1,15 +1,16 @@
 #!/usr/bin/python
 # coding:utf-8
-import math
-from futu import *
+import math, time, sys
+import pandas
+import futu
 from pandasql import sqldf
 from app.charles import CharlesFilterChain
 
 
 def main():
-    quote_ctx = OpenQuoteContext(host='127.0.0.1', port=11111)
+    quote_ctx = futu.OpenQuoteContext(host='127.0.0.1', port=11111)
 
-    success, df_hk = get_all_stocks_by_type(quote_ctx=quote_ctx, stock_type=Market.SH)
+    success, df_hk = get_all_stocks_by_type(quote_ctx=quote_ctx, stock_type=futu.Market.SH)
     codes = df_hk['code'].values.tolist()
 
     inline_frames = list()
@@ -21,7 +22,7 @@ def main():
         inline_frames.append(df)
         time.sleep(1)
 
-    final_df = pd.concat(inline_frames)
+    final_df = pandas.concat(inline_frames)
     final_df = final_df[['code', 'pe_ttm_ratio', 'pb_ratio', 'total_market_val']]
 
 
@@ -45,15 +46,15 @@ def main():
     return 0
 
 
-def get_all_stocks_by_type(quote_ctx, stock_type=Market.HK):
+def get_all_stocks_by_type(quote_ctx, stock_type=futu.Market.HK):
     """
 
     :param quote_ctx:
     :param stock_type:
     :return:
     """
-    ret_code, df = quote_ctx.get_stock_basicinfo(market=stock_type, stock_type=SecurityType.STOCK, code_list=None)
-    if ret_code == RET_OK:
+    ret_code, df = quote_ctx.get_stock_basicinfo(market=stock_type, stock_type=futu.SecurityType.STOCK, code_list=None)
+    if ret_code == futu.RET_OK:
         # print(df.shape[0], df.shape[1])
         # print(df.iloc[0][0])
         success = True
